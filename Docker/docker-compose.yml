@@ -1,0 +1,40 @@
+version: "3"
+services:
+  app:
+    container_name: web-app
+    restart: always
+    build: .
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/app
+    ports:
+      - "3000:3000"
+    links:
+      - mongo1
+    networks:
+      - mynet
+      
+  mongo1:
+    container_name: mongo-p
+    image: mongo
+    command: mongod --replSet my-mongo-set
+    volumes:
+      - ./data1:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - mynet
+      
+  mongo2:
+    container_name: mongo-s
+    image: mongo
+    command: mongod --replSet my-mongo-set
+    volumes:
+      - ./data2:/data/db
+    ports:
+      - "27027:27017"
+    networks:
+      - mynet
+
+networks:
+  mynet:
+

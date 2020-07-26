@@ -1,9 +1,16 @@
-# Build it
+# Docker-compose 
 ```
-docker build -f Dockerfile -t opensooq/gloom .
+docker-compose up
 ```
-
-# Run it
+# Mangodb ReplicaSet
 ```
-docker run --env-file env.file -p3000:3000 -d opensooq/gloom
+docker exec -it mongo-p mongo
+config={_id:"my-mongo-set",members:[{_id:0,host:"mongo-p:27017"},{_id:1,host:"mongo-s:27017"}]};
+rs.initiate(config);
+```
+# Mongodb ReplicaSet priority
+```
+cfg=rs.conf()
+cfg.member["the id number of secondary db"].priority=0
+rs.reconfig(cfg)
 ```
